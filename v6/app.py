@@ -6,8 +6,11 @@ from langchain_core.callbacks import StdOutCallbackHandler
 from flask import Flask, request
 from gradio import gradio as gr
 import openlit
+import logging
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 openlit.init(
   otlp_endpoint="http://localhost:4318",
 )
@@ -28,6 +31,7 @@ retriever = vector_db.as_retriever(search_kwargs={"k": 15})
 conversation_chain = ConversationalRetrievalChain.from_llm(llm=llm, retriever=retriever, memory=memory, callbacks=[StdOutCallbackHandler()])
 
 def chat(message, history):
+    logger.info("Invoking the conversation chain")
     result = conversation_chain.invoke({"question": message})
     return result["answer"]
 
