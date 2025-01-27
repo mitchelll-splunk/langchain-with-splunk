@@ -32,6 +32,7 @@ pip3 install -r ./requirements.txt
 # define the service name and environment
 export OTEL_SERVICE_NAME=my-llm-app
 export OTEL_RESOURCE_ATTRIBUTES='deployment.environment=test'
+export OTEL_PYTHON_DISABLED_INSTRUMENTATIONS=fastapi
 
 # load the customer data into Chroma DB 
 # Note:  Running the customer_data.py program multiple times will result in 

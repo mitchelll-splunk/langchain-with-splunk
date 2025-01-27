@@ -4,11 +4,13 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain_core.callbacks import StdOutCallbackHandler
 from flask import Flask, request
-from opentelemetry.instrumentation.langchain import LangchainInstrumentor
 from gradio import gradio as gr
+import openlit
 
 app = Flask(__name__)
-LangchainInstrumentor().instrument()
+openlit.init(
+  otlp_endpoint="http://localhost:4318",
+)
 
 embeddings_model = OpenAIEmbeddings()
 
