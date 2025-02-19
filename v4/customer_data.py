@@ -1,6 +1,7 @@
+import weaviate
+from langchain_weaviate.vectorstores import WeaviateVectorStore
 from langchain_community.document_loaders.csv_loader import CSVLoader
 from langchain_openai import OpenAIEmbeddings
-from langchain.vectorstores.chroma import Chroma
 
 file_path = (
    "./customers-1000.csv"
@@ -11,10 +12,12 @@ customer_data = loader.load()
 
 embeddings_model = OpenAIEmbeddings()
 
-db = Chroma.from_documents(
+weaviate_client = weaviate.connect_to_local()
+
+db = WeaviateVectorStore.from_documents(
    customer_data,
    embedding=embeddings_model,
-   persist_directory="../my_embeddings"
+   client=weaviate_client,
 )
 
 results = db.similarity_search(
